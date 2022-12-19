@@ -35,7 +35,7 @@ mod_gbs_server <- function(id, hd = 30L, sub = 400L) {
     # ns <- session$ns
     ret <-
       shiny::reactive({
-        if (!gibasa::is_blank(input$textarea)) {
+        if (input$textarea != "") {
           text <- stringi::stri_split_lines(input$textarea, omit_empty = TRUE) |>
             unlist() |>
             head(hd) |>
@@ -50,7 +50,7 @@ mod_gbs_server <- function(id, hd = 30L, sub = 400L) {
             dplyr::group_by(.data$doc_id, .data$token, .data$POS1, .data$POS2) |>
             dplyr::count() |>
             dplyr::ungroup() |>
-            gibasa::bind_tf_idf2(tf = input$tf, idf = input$idf)
+            audubon::bind_tf_idf2(tf = input$tf, idf = input$idf)
           })
         } else {
           future_promise({
